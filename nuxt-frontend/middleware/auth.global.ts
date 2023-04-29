@@ -1,0 +1,18 @@
+export default defineNuxtRouteMiddleware(async (to, from) => {
+  if (to.fullPath === "/login" || to.fullPath === "/signup") {
+    return;
+  }
+
+  if (process.server) {
+    const jwt = useCookie("jwt");
+    if (!jwt.value) {
+      return navigateTo("/login");
+    }
+
+    const user = await getUser()
+    
+    if (!user) {
+      return navigateTo("/login");
+    }
+  }
+});
