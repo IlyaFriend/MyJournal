@@ -1,12 +1,11 @@
-export const getUser = async () => {
-    const username = useCookie('username').value
-    if (!username) return
+export const getUser = async (username) => {
+    if (!username) return null
     const res = await Api.request("get", `/users/${username}`)
     .then(res => {
         return res
     })
     .catch(error => {
-        console.log(error)
+        console.error(error)
         return null
     });
     

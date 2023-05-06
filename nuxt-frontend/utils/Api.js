@@ -1,16 +1,15 @@
 import axios from "axios";
-// import getJWT from "./getJWT";
 
 const api = {
   request: async (method, url, data, headers = {}) => {
-    // const jwt = getJWT();
-    // let authHeader = {};
+    const jwt = useCookie('jwt').value;
+    let authHeader = {};
 
-    // if (jwt) {
-    //     authHeader = {
-    //         Authorization: `Bearer ${jwt}`,
-    //     };
-    // }
+    if (jwt) {
+        authHeader = {
+            Authorization: `Bearer ${jwt}`,
+        };
+    }
 
     return await axios({
         url: url,
@@ -18,7 +17,7 @@ const api = {
         baseURL: 'http://localhost:5000',
         headers: {
           ...headers,
-        //   ...authHeader,
+          ...authHeader,
         },
         data: data,
     }).then((res) => {

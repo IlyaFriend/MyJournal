@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex flex-col justify-center min-h-screen py-12 bg-orange-950 sm:px-6 lg:px-8"
+    class="flex flex-col justify-center min-h-screen py-12 bg-orange-600 sm:px-6 lg:px-8"
   >
     <div class="-mt-12 sm:mx-auto sm:w-full sm:max-w-md">
       <div>

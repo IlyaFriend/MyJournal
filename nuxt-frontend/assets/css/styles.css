@@ -1,3 +1,17 @@
 @tailwind base;
+h1 {
+  font-size: xxx-large;
+  font-weight: inherit;
+}
+
+h2 {
+  font-size: xx-large;
+  font-weight: inherit;
+}
+
+h3 {
+  font-size: x-large;
+  font-weight: inherit;
+}
 @tailwind components;
 @tailwind utilities;

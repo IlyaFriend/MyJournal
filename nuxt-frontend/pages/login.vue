@@ -66,7 +66,7 @@
               for="password"
               class="block text-sm font-medium leading-5 text-gray-700"
             >
-              Passwort
+              Password
             </label>
             <div class="relative mt-1 rounded-md shadow-sm">
               <input
@@ -156,13 +156,15 @@ const login = async () => {
 
     // store jwt and username in cookies
     const jwtCookie = useCookie("jwt", { expires: date_of_expiration });
-    const usernameCookie = useCookie("username", { expires: date_of_expiration });
+    const usernameCookie = useCookie("username", {
+      expires: date_of_expiration,
+    });
     jwtCookie.value = res.data.token;
     usernameCookie.value = res.data.username;
 
     console.log("signed in");
     message.value = "logged in";
-    await navigateTo('/')
+    await navigateTo("/");
   } catch (e: any) {
     if (e.code === "ERR_BAD_REQUEST") {
       alert("There is no such user.");
@@ -171,5 +173,4 @@ const login = async () => {
     }
   }
 };
-
 </script>

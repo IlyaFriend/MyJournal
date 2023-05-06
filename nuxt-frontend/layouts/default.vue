@@ -2,9 +2,9 @@
   <div>
     <div v-if="showHeader" id="fullpage-div" class="min-h-full py-0 px-0 bg-orange-100">
       <TheHeader />
-      <div class="height90vh grid grid-cols-5">
+      <div class="min-height90vh flex">
         <TheMenu></TheMenu>
-        <div class="px-8 py-10 col-span-4">
+        <div class="width80vw px-16 py-10 col-span-4">
           <NuxtPage />
         </div>
       </div>
@@ -27,8 +27,17 @@ export default {
 };
 </script>
 
-<style scoped>
-.height90vh {
-  height: 90vh;
+<!-- styles available in all the files -->
+<style>
+.min-height90vh {
+  min-height: 90vh;
+}
+
+.width20vw {
+  width: 20vw;
+}
+
+.width80vw {
+  width: 80vw;
 }
 </style>

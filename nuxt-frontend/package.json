@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.13.6",
-    "universal-cookie": "^4.0.4"
+    "universal-cookie": "^4.0.4",
+    "vue-final-modal": "^4.4.2"
   }
 }

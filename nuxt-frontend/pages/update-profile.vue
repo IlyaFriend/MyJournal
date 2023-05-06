@@ -6,7 +6,7 @@
 import api from '~/utils/Api';
 
 onMounted(async () => {
-  const userInfo = await api.request("get", `/users/user1337`);
+  const userInfo = await getCurrentUser();
 
   console.log(userInfo);
 });
