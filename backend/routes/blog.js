@@ -61,7 +61,7 @@ router.route('/:blogId')
         res.statusCode = 403;
         res.end('You are not allowed to do this action!');
     })
-    .put(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
+    .put(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
         Blog.findByIdAndUpdate(req.params.blogId, { $set: req.body }, { new: true })    
             .then(blog => {
                         res.statusCode = 200;
@@ -106,6 +106,7 @@ router.route('/:blogId/comments')
             .then(blog => {
                         if (blog) {
                             req.body.author = req.user._id;
+                            let oldComments = [...blog.comments]
                             blog.comments = blog.comments.concat([req.body]);
                             blog.save()
                                 .then(
@@ -113,11 +114,14 @@ router.route('/:blogId/comments')
                                         Blog.findById(blog._id)
                                             .populate('comments.author')
                                             .then(_ => {
+                                                let newComment = blog.comments.find(comment => !oldComments.find(oldComment => oldComment._id === comment._id))
                                                 res.statusCode = 201;
-                                                res.end('Successfully created comment'); 
+                                                res.json(newComment._id); 
                                             })
                                     }, 
-                                    err => { next(err); }
+                                    err => { 
+                                        console.log('error comments', err)
+                                        next(err); }
                                 )
                             return;
                         }
@@ -184,9 +188,6 @@ router.route('/:blogId/comments/:commentId')
                             return next(err);
                         }
                         if (blog && blog.comments.id(req.params.commentId) != null) {
-                            if (req.body.rating) {
-                                blog.comments.id(req.params.commentId).rating = req.body.rating;
-                            }
                             if (req.body.review) {
                                 blog.comments.id(req.params.commentId).review = req.body.review;
                             }
@@ -211,7 +212,7 @@ router.route('/:blogId/comments/:commentId')
     .delete(authenticate.verifyUser, (req, res, next) => {
         Blog.findById(req.params.blogId)
             .then(blog => {
-                        if (!blog.comments.id(req.params.commentId).author.equals(req.user._id)) {
+                        if (!blog.comments.id(req.params.commentId).author.equals(req.user._id) && !req.user.admin) {
                             err = new Error('You are not allowed to delete comments of other users.');
                             err.status = 403;
                             return next(err);
@@ -229,6 +230,23 @@ router.route('/:blogId/comments/:commentId')
                   }, 
                   err => { next(err); })
             .catch(err => { next(err); });
+    })
+
+router.route('/userBlogs/:userId')
+    .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200)} )
+    .get(cors.cors, (req, res, next) => {
+        console.log('\n', req.params.userId, '\n')
+        Blog.find({ writer: req.params.userId })
+        .populate('writer')
+        .then(blogs => {
+            res.statusCode = 200;
+            res.setHeader('Content-Type', 'application/json');
+            res.json(blogs);
+        },
+        err => { console.log(err)
+            next(err); })
+    .catch(err => { console.log(err)
+        next(err); });
     })
 
 module.exports = router;

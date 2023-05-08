@@ -61,8 +61,6 @@ router.route('/:username')
     .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200)} )
     .get(cors.cors, (req, res, next) => {
         User.findByUsername(req.params.username)
-            // .populate('comments.author')
-            // .populate('writer')
             .then(user => {
                     res.statusCode = 200;
                     res.setHeader('Content-Type', 'application/json');
@@ -71,28 +69,24 @@ router.route('/:username')
                   err => { next(err); })
             .catch(err => { next(err); })
     })
-    // .post(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res) => {
-    //     res.statusCode = 403;
-    //     res.end('You are not allowed to do this action!');
-    // })
-    // .put(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
-    //     User.findByIdAndUpdate(req.params.username, { $set: req.body }, { new: true })    
-    //         .then(user => {
-    //                     res.statusCode = 200;
-    //                     res.setHeader('Content-Type', 'application/json');
-    //                     res.json(user);
-    //               },
-    //               err => { next(err); })
-    //         .catch(err => { next(err); });
-    // })
-    // .delete(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
-    //     User.findByIdAndRemove(req.params.username)
-    //         .then(_ => {
-    //                     res.statusCode = 200;
-    //                     res.end('Succesfully deleted user!')
-    //               }, 
-    //               err => { next(err); })
-    //         .catch(err => { next(err); });
-    // })
+    .put(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
+        User.findByIdAndUpdate(req.params.username, { $set: req.body }, { new: true })    
+            .then(user => {
+                        res.statusCode = 200;
+                        res.setHeader('Content-Type', 'application/json');
+                        res.json(user);
+                  },
+                  err => { next(err); })
+            .catch(err => { next(err); });
+    })
+    .delete(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
+        User.findByIdAndRemove(req.params.username)
+            .then(_ => {
+                        res.statusCode = 200;
+                        res.end('Succesfully deleted user!')
+                  }, 
+                  err => { next(err); })
+            .catch(err => { next(err); });
+    })
 
 module.exports = router;

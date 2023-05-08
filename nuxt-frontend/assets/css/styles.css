@@ -13,5 +13,21 @@ h3 {
   font-size: x-large;
   font-weight: inherit;
 }
+
+.h-128 {
+  height: 32rem;
+}
+
+.h-192 {
+  height: 48rem;
+}
+
+input {
+  font-size: 1rem !important
+}
+
+textarea {
+  font-size: 1rem !important
+}
 @tailwind components;
 @tailwind utilities;

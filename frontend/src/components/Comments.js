@@ -14,7 +14,6 @@ function Comments({ blogId, userId, isAdmin }) {
 
     const getComments = async () => {
         const data = await api.request("get", `/blogs/${blogId}/comments`);
-        console.log(data)
         if (data) {
             setComments(data);
         }

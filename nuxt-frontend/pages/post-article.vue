@@ -95,7 +95,7 @@
 
         <div class="w-fit mt-10">
           <label for="label" class="block font-medium leading-5 text-gray-700">
-            Label
+            Category
           </label>
           <div class="relative mt-1 rounded-md shadow-sm">
             <input
@@ -152,7 +152,7 @@
 </template>
 
 <script setup lang="ts">
-import api from "../utils/Api";
+import { usePostBlog } from "../composables/dbActions";
 
 const header = ref("");
 const article = ref("");
@@ -160,19 +160,17 @@ const label = ref("");
 
 const errorMessage = ref("");
 
-const postArticle = async () => {
-  const data = {
-    header: header.value,
-    article:  article.value,
-    label: label.value,
-  };
-
-  const res = await api.request("post", `/blogs/`, JSON.stringify(data), {
-    "Content-Type": "application/json",
-  });
-  if (res.status === 201) {
-    alert("Article created!");
-  }
-  document.getElementById('post-article-form')?.reset()
-};
+const postArticle = async () =>
+  usePostBlog(
+    {
+      header: header.value.trim(),
+      article: article.value.trim(),
+      label: label.value.trim(),
+    },
+    () => {
+      header.value = "";
+      article.value = "";
+      label.value = "";
+    }
+  );
 </script>

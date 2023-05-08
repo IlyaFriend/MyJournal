@@ -38,42 +38,30 @@
         </div>
         <div id="comments">
           <TheComment
-            v-for="comment in comments"
+            v-for="comment in [...comments].reverse()"
             :author="comment.author"
             :commentId="comment._id"
+            :commentText="comment.review"
             :blogId="blogId"
             :key="comment._id"
             @delete-comment="(id) => deleteComment(id)"
+            @edit-comment="(id, text) => editComment(id, text)"
             >{{ comment.review }}</TheComment
           >
         </div>
       </div>
     </div>
-    <button @click="open">
-      Open Modal
-    </button>
-    <ModalsContainer />
   </div>
 </template>
 
-<script setup>  
-import { ModalsContainer, useModal } from 'vue-final-modal'
-import ModalConfirmPlainCss from '../../components/ModalConfirmPlainCss.vue'
-const { open, close } = useModal({
-  component: ModalConfirmPlainCss,
-  attrs: {
-    title: 'Hello World!',
-    onConfirm() {
-      close()
-    },
-  },
-  slots: {
-    default: '<p>The content of the modal</p>',
-  },
-})
-
+<script setup>
 import api from "~/utils/Api";
 import { useRoute } from "vue-router";
+import {
+  usePostComment,
+  useDeleteComment,
+  useEditComment,
+} from "../../composables/dbActions.ts";
 const route = useRoute();
 const blogId = route.params.blogId;
 
@@ -82,49 +70,38 @@ let comments = ref(blog.comments);
 
 const commentText = ref("");
 
-const postComment = async () => {
-  const data = {
-    review: commentText.value,
-  };
+const postComment = async () =>
+  await usePostComment(blogId, commentText.value, async (res) => {
+    commentText.value = "";
 
-  const res = await api.request(
-    "post",
-    `/blogs/${blogId}/comments`,
-    JSON.stringify(data),
-    {
-      "Content-Type": "application/json",
-    }
-  );
+    let newComment = await getComment(res.data);
+    comments.value.push(newComment);
+  });
 
-  document.getElementById("post-article-form")?.reset();
+const deleteComment = async (commentId) =>
+  useDeleteComment(blogId, commentId, (res) => {
+    comments.value = comments.value.filter(
+      (comment) => comment._id !== commentId
+    );
+  });
 
-  let newComment = await getComment(res.data)
-  comments.value.push(newComment);
-
-  if (res.status === 201) {
-    alert("Comment added.");
-  }
-};
-
-const deleteComment = async (commentId) => {
-  const r = confirm("Do you want to delete this comment?")
-  if (!r) return;
-  const res = await Api.request(
-    "delete",
-    `/blogs/${blogId}/comments/${commentId}`
-  ).then(res => { return res});
-
-  comments.value = comments.value.filter(
-    (comment) => comment._id !== commentId
-  );
-
-  return res
-};
+const editComment = async (commentId, text) =>
+  useEditComment(blogId, commentId, text, (res) => {
+    comments.value = comments.value.map((comment) =>
+      comment._id === commentId
+        ? res.data.find((item) => item._id === commentId)
+        : comment
+    );
+  });
 
 const getComment = async (commentId) => {
-  return await Api.request("get", `/blogs/${blogId}/comments/${commentId}`)
-  .then(res => { return res})
-}
+  return await Api.request(
+    "get",
+    `/blogs/${blogId}/comments/${commentId}`
+  ).then((res) => {
+    return res;
+  });
+};
 </script>
 
 <style scoped>

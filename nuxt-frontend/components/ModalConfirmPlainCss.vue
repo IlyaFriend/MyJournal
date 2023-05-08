@@ -1,13 +1,14 @@
 <script setup lang="ts">
-import { VueFinalModal } from 'vue-final-modal'
+import { VueFinalModal } from "vue-final-modal";
 
 defineProps<{
-  title?: string
-}>()
+  title?: string;
+}>();
 
 const emit = defineEmits<{
-  (e: 'confirm'): void
-}>()
+  (e: "confirm"): void;
+  (e: "close"): void;
+}>();
 </script>
 
 <template>
@@ -19,9 +20,10 @@ const emit = defineEmits<{
   >
     <h1>{{ title }}</h1>
     <slot />
-    <button @click="emit('confirm')">
-      Confirm
-    </button>
+    <div class="flex justify-between">
+      <button class="w-32 mx-4 py-2 hover:bg-slate-200 transition-colors" @click="emit('close')">Cancel</button>
+      <button class="w-32 mx-4 py-2 hover:bg-slate-200 transition-colors" @click="emit('confirm')">Confirm</button>
+    </div>
   </VueFinalModal>
 </template>
 
@@ -38,15 +40,15 @@ const emit = defineEmits<{
   background: #fff;
   border-radius: 0.5rem;
 }
-.confirm-modal-content > * + *{
+.confirm-modal-content > * + * {
   margin: 0.5rem 0;
 }
 .confirm-modal-content h1 {
   font-size: 1.375rem;
 }
 .confirm-modal-content button {
-  margin: 0.25rem 0 0 auto;
-  padding: 0 8px;
+  /* margin: 0.25rem 0 0 auto; */
+  /* padding: 0 8px; */
   border: 1px solid;
   border-radius: 0.5rem;
 }
