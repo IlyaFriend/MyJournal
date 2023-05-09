@@ -29,5 +29,9 @@ input {
 textarea {
   font-size: 1rem !important
 }
+
+.border-b-2, .border-l-2 {
+  border-color: #451A03; /* bg-amber-500 */
+}
 @tailwind components;
 @tailwind utilities;

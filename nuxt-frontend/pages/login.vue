@@ -139,16 +139,19 @@ const message = ref("");
 const errorMessage = ref("");
 
 const login = async () => {
+  const userData = {
+    username: username.value,
+    password: password.value,
+  };
+  const userDataValid = validateUserData(userData);
+  if (userDataValid.error) {
+    alert(userDataValid.error.message);
+    return;
+  }
   try {
-    const res = await api.request(
-      "post",
-      `/users/login`,
-      {
-        username: username.value,
-        password: password.value,
-      },
-      { "Content-Type": "application/json" }
-    );
+    const res = await api.request("post", `/users/login`, userData, {
+      "Content-Type": "application/json",
+    });
     const date_of_expiration = new Date();
     date_of_expiration.setTime(
       date_of_expiration.getTime() + 14 * 24 * 60 * 60 * 1000

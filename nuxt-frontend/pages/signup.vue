@@ -235,18 +235,22 @@ const message = ref("");
 const errorMessage = ref("");
 
 const register = async () => {
+  const userData = {
+    username: username.value,
+    password: password.value,
+    firstname: firstname.value,
+    lastname: lastname.value,
+  };
+  const userDataValid = validateUserData(userData, true);
+  if (userDataValid.error) {
+    alert(userDataValid.error.message);
+    return;
+  }
   try {
-    const res = await api.request(
-      "post",
-      `/users/signup`,
-      {
-        username: username.value,
-        password: password.value,
-        firstname: firstname.value,
-        lastname: lastname.value,
-      },
-      { "Content-Type": "application/json" }
-    );
+    const res = await api.request("post", `/users/signup`, userData, {
+      "Content-Type": "application/json",
+    });
+
     const date_of_expiration = new Date();
     date_of_expiration.setTime(
       date_of_expiration.getTime() + 14 * 24 * 60 * 60 * 1000
@@ -254,16 +258,23 @@ const register = async () => {
 
     // store jwt and username in cookies
     const jwtCookie = useCookie("jwt", { expires: date_of_expiration });
-    const usernameCookie = useCookie("username", { expires: date_of_expiration });
+    const usernameCookie = useCookie("username", {
+      expires: date_of_expiration,
+    });
     jwtCookie.value = res.data.token;
     usernameCookie.value = res.data.username;
-    
+
     console.log("signed up");
+    message.value = "signed up";
+    navigateTo("/");
   } catch (error) {
+    const user = await getUser(userData.username);
+    if (user) {
+      alert("Username is already in use.\nPlease, choose another username");
+    } else {
+      alert("Error while signing in:" + error);
+    }
     console.error(error);
   }
-
-  message.value = "signed up";
-  navigateTo("/");
 };
 </script>

@@ -111,30 +111,41 @@ export const useEditComment = async (
   }
 };
 
-export const useEditUser = async (id: string, userData: UserContent) => {
-  await Api.request(
-  "put",
-  `/users/${id}`,
-  JSON.stringify(userData),
-  { "Content-Type": "application/json" }
-);}
-
+export const useEditUser = async (
+  id: string,
+  userData,
+  next: Function = () => {}
+) => {
+  try {
+    const res = await Api.request(
+      "put",
+      `/users/${id}`,
+      JSON.stringify(userData),
+      { "Content-Type": "application/json" }
+    );
+    next(res);
+    if (userData.username) {
+      const usernameCookie = useCookie("username");
+      usernameCookie.value = userData.username;
+      console.log(usernameCookie.value);
+    }
+  } catch (e) {
+    alert("Could not update user. Probably, username is already used.");
+  }
+};
 
 export const useDeleteUser = async (
   userId: string,
   next: Function = () => {}
 ) => {
   const user = await getCurrentUser();
-  const blogs = await Api.request("get", `/blogs/userBlogs/${user._id}`)
+  const blogs = await Api.request("get", `/blogs/userBlogs/${user._id}`);
 
   for (const blog of blogs) {
-    await useDeleteBlog(blog._id)
+    await useDeleteBlog(blog._id);
   }
 
-  const res = await Api.request(
-    "delete",
-    `/users/${userId}`
-  ).then((res) => {
+  const res = await Api.request("delete", `/users/${userId}`).then((res) => {
     return res;
   });
 
@@ -144,7 +155,7 @@ export const useDeleteUser = async (
     alert("Error occured.");
   }
 
-  navigateTo('/login')
+  useLogout();
   return res;
 };
 
@@ -153,6 +164,6 @@ export const useLogout = () => {
   const usernameCookie = useCookie("username");
   jwtCookie.value = null;
   usernameCookie.value = null;
-  
+
   navigateTo("/login");
 };

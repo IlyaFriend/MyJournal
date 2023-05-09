@@ -3,7 +3,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     return;
   }
 
-  if (process.server) {
+  if (true) {
     const jwt = useCookie("jwt");
     if (!jwt.value) {
       return navigateTo("/login");
