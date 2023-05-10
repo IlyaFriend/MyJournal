@@ -1,6 +1,8 @@
 <template>
   <div class="">
     <h1>{{ blog.header }}</h1>
+    <NuxtLink :to="'/' + blog.writer.username"><h3><b>{{ blog.writer.username }}</b></h3></NuxtLink>
+    <h4><i>{{ blog.label }}</i></h4>
     <div class="flex mt-6">
       <div id="article-section" class="pr-16">
         {{ blog.article }}
@@ -66,6 +68,7 @@ const route = useRoute();
 const blogId = route.params.blogId;
 
 let blog = await api.request("get", `/blogs/${blogId}`);
+console.log(blog)
 let comments = ref(blog.comments);
 
 const commentText = ref("");
