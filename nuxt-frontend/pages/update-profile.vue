@@ -32,6 +32,7 @@
     </div>
   </the-form-section>
   <the-form-section :on-submit="openDeleteAccountConfirm">
+    <h4>You will not be able to recover the account.<br/>All the articles will be deleted.</h4>
     <template #submit-button>
       <div class="flex">
         <button

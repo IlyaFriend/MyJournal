@@ -1,18 +1,24 @@
 <template>
   <div>
-    <div v-if="showHeader" id="fullpage-div" class="min-h-full py-0 px-0 bg-orange-100">
+    <div
+      v-if="showHeader"
+      id="fullpage-div"
+      class="min-h-full py-0 px-0 bg-orange-100"
+    >
       <TheHeader />
       <div class="min-height90vh flex">
         <TheMenu></TheMenu>
         <div class="width80vw px-16 py-10 col-span-4">
+          <button @click="goBack" class="rounded-full hover:shadow-lg">
+            <img src="../back-48.png" />
+          </button>
           <NuxtPage />
         </div>
       </div>
     </div>
     <div v-else>
-        <NuxtPage />
+      <NuxtPage />
     </div>
-    <!-- <TheFooter /> -->
   </div>
 </template>
 

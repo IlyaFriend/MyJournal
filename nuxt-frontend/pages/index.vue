@@ -18,6 +18,8 @@
 import { useDeleteBlog, useEditBlog } from "~/composables/dbActions";
 import { BlogContent } from "~/types/blog";
 import api from "~/utils/Api";
+
+
 const initBlogs = await api.request("get", `/blogs`);
 let blogs = ref(initBlogs);
 
