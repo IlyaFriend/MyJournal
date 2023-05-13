@@ -136,7 +136,7 @@
             {{ errorMessage }}
           </p>
         </div>
-        <div class="mt-6 flex justify-center">
+        <div class="mt-6 flex justify-left">
           <span class="block w-48 rounded-md shadow-sm">
             <button
               class="flex justify-center w-full px-4 py-2 font-medium text-white transition duration-150 ease-in-out bg-amber-600 border border-transparent rounded-md hover:bg-amber-500 focus:outline-none focus:border-amber-700 focus:ring-amber active:bg-amber-700"

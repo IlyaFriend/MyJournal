@@ -68,7 +68,6 @@ const route = useRoute();
 const blogId = route.params.blogId;
 
 let blog = await api.request("get", `/blogs/${blogId}`);
-console.log(blog)
 let comments = ref(blog.comments);
 
 const commentText = ref("");

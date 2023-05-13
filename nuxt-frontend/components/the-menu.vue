@@ -1,8 +1,8 @@
 <template>
-  <div id="menu" class="width20vw bg-yellow-800">
+  <div id="menu" class="width20vw bg-blue-600">
     <TheMenuButton :onClick="() => navigateTo('/')">Main</TheMenuButton>
     <TheMenuButton :onClick="() => navigateTo('/following')">Following</TheMenuButton>
-    <TheMenuButton :onClick="() => navigateTo(`/${user.username}`)"
+    <TheMenuButton :onClick="async () => navigateTo(`/${await getUsername()}`)"
       >My Blog</TheMenuButton
     >
     <TheMenuButton :onClick="() => navigateTo('/post-article')"
@@ -35,5 +35,7 @@ const { open: openLogoutConfirm, close: closeLogoutConfirm } = useModal({
     default: "",
   },
 });
-const user = await getCurrentUser();
+const getUsername = async () => {
+  return (await getCurrentUser()).username
+}
 </script>

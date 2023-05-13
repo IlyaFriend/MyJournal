@@ -3,7 +3,7 @@
     <div
       v-if="showHeader"
       id="fullpage-div"
-      class="min-h-full py-0 px-0 bg-orange-100"
+      class="min-h-full py-0 px-0 bg-white"
     >
       <TheHeader />
       <div class="min-height90vh flex">

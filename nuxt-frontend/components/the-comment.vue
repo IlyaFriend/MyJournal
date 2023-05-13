@@ -92,7 +92,6 @@ const { open: openEditCommentConfirm, close: closeEditCommentConfirm } =
   });
 
 const user = await getCurrentUser();
-console.log(user);
 const userIsAuthor =
   props.author === null ? null : user.username === props.author.username;
 const userIsAdmin = props.author === null ? null : user.admin;

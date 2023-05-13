@@ -1,10 +1,10 @@
 <template>
   <div
-    class="container flex flex-1 flex-col border-2 max-h-96 px-6 py-6 border-amber-900"
+    class="container flex flex-1 flex-col border-2 max-h-96 px-6 py-6 border-blue-900"
   >
     <NuxtLink
       :to="blogLink"
-      class="text-amber-950 hover:text-orange-700 hover:cursor-pointer transition-colors"
+      class="text-blue-950 hover:text-orange-700 hover:cursor-pointer transition-colors"
     >
       <span class="h2 underline"
         >{{ header.slice(0, 60) }}{{ header.length > 60 ? "..." : "" }}</span
@@ -19,7 +19,7 @@
       <div>
         <NuxtLink
           :to="writerLink"
-          class="underline text-xl text-amber-950 hover:text-amber-800 transition-colors"
+          class="underline text-xl text-blue-950 hover:text-blue-800 transition-colors"
         >
           {{ $props.writer.firstname }} {{ $props.writer.lastname }}
         </NuxtLink>
@@ -74,7 +74,6 @@ const { open: openDeleteBlogConfirm, close: closeDeleteBlogConfirm } = useModal(
       title: "Do you want to delete the comment?",
       onConfirm() {
         emit("delete-blog", props.blogId);
-        console.log("delete-blog", props.blogId);
         closeDeleteBlogConfirm();
       },
       onClose() {

@@ -7,5 +7,4 @@ export default defineNuxtConfig({
         autoprefixer: {},
       },
     },
-    // modules: ["@nuxtjs/axios"],
   });

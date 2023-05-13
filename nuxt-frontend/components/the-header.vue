@@ -1,5 +1,5 @@
 <template>
-<header class="height10vh bg-amber-950">
+<header class="height10vh bg-blue-950">
     <span class="align-middle"><b>MyJournal</b></span>
 </header>
 </template>

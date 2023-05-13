@@ -138,6 +138,7 @@ label {
 }
 
 input {
+  border: 2px solid;
   height: 2.4rem;
   padding: 0 0.5rem;
 }

@@ -11,7 +11,7 @@
     </div>
     <slot name="submit-button">
         <div class="flex">
-          <button type="submit" class="bg-orange-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-orange-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500">
+          <button type="submit" class="bg-orange-500 px-3 py-2 text-md font-semibold text-white shadow-sm hover:bg-orange-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500">
             Save
           </button>
         </div>

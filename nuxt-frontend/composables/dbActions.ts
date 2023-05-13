@@ -35,7 +35,6 @@ export const useEditBlog = async (blogId: string, articleData: BlogContent) => {
 };
 
 export const useDeleteBlog = async (blogId: string) => {
-  console.log("Deleting blog " + blogId);
   const res = await Api.request("delete", `/blogs/${blogId}`).then((res) => {
     return res;
   });
@@ -131,7 +130,6 @@ export const useEditUser = async (
     if (userData.username) {
       const usernameCookie = useCookie("username");
       usernameCookie.value = userData.username;
-      console.log(usernameCookie.value);
     }
   } catch (e) {
     alert("Could not update user. Probably, username is already used.");
