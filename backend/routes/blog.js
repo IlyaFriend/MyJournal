@@ -237,14 +237,14 @@ router.route('/userBlogs/:userId')
     .get(cors.cors, (req, res, next) => {
         console.log('\n', req.params.userId, '\n')
         Blog.find({ writer: req.params.userId })
-        .populate('writer')
-        .then(blogs => {
-            res.statusCode = 200;
-            res.setHeader('Content-Type', 'application/json');
-            res.json(blogs);
-        },
-        err => { console.log(err)
-            next(err); })
+            .populate('writer')
+            .then(blogs => {
+                res.statusCode = 200;
+                res.setHeader('Content-Type', 'application/json');
+                res.json(blogs);
+            },
+            err => { console.log(err)
+                next(err); })
     .catch(err => { console.log(err)
         next(err); });
     })

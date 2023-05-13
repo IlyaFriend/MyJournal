@@ -1,6 +1,7 @@
 <template>
   <div id="menu" class="width20vw bg-yellow-800">
     <TheMenuButton :onClick="() => navigateTo('/')">Main</TheMenuButton>
+    <TheMenuButton :onClick="() => navigateTo('/following')">Following</TheMenuButton>
     <TheMenuButton :onClick="() => navigateTo(`/${user.username}`)"
       >My Blog</TheMenuButton
     >

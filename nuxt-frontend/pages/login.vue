@@ -173,6 +173,7 @@ const login = async () => {
       alert("There is no such user.");
     } else {
       console.log("Error occurred: " + e.message);
+      alert("There is no such user.");
     }
   }
 };

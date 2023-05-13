@@ -1,13 +1,13 @@
 <template>
   <div class="">
     <h1>{{ blog.header }}</h1>
-    <NuxtLink :to="'/' + blog.writer.username"><h3><b>{{ blog.writer.username }}</b></h3></NuxtLink>
+    <NuxtLink :to="'/' + blog.writer.username"><h3 class="hover:underline"><b>{{ blog.writer.username }}</b></h3></NuxtLink>
     <h4><i>{{ blog.label }}</i></h4>
     <div class="flex mt-6">
       <div id="article-section" class="pr-16">
         {{ blog.article }}
       </div>
-      <div id="comments-section" class="px-4 py-8 border-l-2">
+      <div id="comments-section" class="px-4 pb-8 border-l-2">
         <div id="post-comment" class="px-2 py-4 border-b-2 border-t-2">
           <form>
             <div class="">

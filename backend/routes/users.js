@@ -37,9 +37,6 @@ router.post("/signup", cors.corsWithOptions, (req, res, next) => {
         res.setHeader("Content-Type", "application/json");
         res.json({ err: err });
         console.log(err);
-        // console.log('\n', "____________________")
-        // console.log(req.body)
-        // console.log("____________________", '\n')
         return;
       }
       if (req.body.firstname) user.firstname = req.body.firstname;
@@ -120,14 +117,18 @@ router
       )
         .then(
           (user) => {
-            console.log('\n', ''+req.body.oldPassword, req.body.newPassword,)
-            user.changePassword(''+req.body.oldPassword, req.body.newPassword, function(err) {
-              if (err) {
-                console.log(err);
-              } else {
-                console.log('Password changed successfully!');
+            console.log("\n", "" + req.body.oldPassword, req.body.newPassword);
+            user.changePassword(
+              "" + req.body.oldPassword,
+              req.body.newPassword,
+              function (err) {
+                if (err) {
+                  console.log(err);
+                } else {
+                  console.log("Password changed successfully!");
+                }
               }
-            })
+            );
             console.log(1.1, user);
             res.statusCode = 200;
             res.setHeader("Content-Type", "application/json");
@@ -140,7 +141,7 @@ router
           }
         )
         .catch((err) => {
-            console.log(1.3);
+          console.log(1.3);
           console.log(err);
           next(err);
         });
@@ -172,6 +173,114 @@ router
         (_) => {
           res.statusCode = 200;
           res.end("Succesfully deleted user!");
+        },
+        (err) => {
+          next(err);
+        }
+      )
+      .catch((err) => {
+        next(err);
+      });
+  });
+
+router
+  .route("/subscribe/:id")
+  .options(cors.corsWithOptions, (req, res) => {
+    res.sendStatus(200);
+  })
+  .post(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
+    User.findById(req.params.id)
+      .then(
+        (user) => {
+          if (user) {
+            let oldFollowing = [...user.following];
+            if (oldFollowing.length && oldFollowing.findIndex(id => req.body.id === id) > -1) {
+              console.log('user already following')
+              res.send('user already following')
+              return
+            }
+            user.following = user.following.concat([req.body.id]);
+            user.save().then(
+              (user) => {
+                User.findById(user._id)
+                  .then((_) => {
+                    let newFollowing = user.following.find(
+                      (following) =>
+                        !oldFollowing.find(
+                          (oldFollowing) => oldFollowing === following
+                        )
+                    );
+                    res.statusCode = 201;
+                    res.json(newFollowing);
+                  });
+              },
+              (err) => {
+                console.log("error following", err);
+                next(err);
+              }
+            );
+            return;
+          }
+          err = new Error("User" + req.params.id + "not found");
+          err.status = 404;
+          return next(err);
+        },
+        (err) => {
+          next(err);
+        }
+      )
+      .catch((err) => {
+        next(err);
+      });
+  })
+  .delete(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
+    User.findById(req.params.id)
+      .then(
+        (user) => {
+          if (user) {
+            let oldFollowing = [...user.following];
+            if (oldFollowing.length && oldFollowing.findIndex(id => req.body.id === id) < 0) {
+
+              console.log('\n')
+              console.log(user.following)
+              console.log(req.body.id)
+              console.log('\n')
+
+              console.log('user is not following')
+              res.statusCode = 406;
+              res.send('user is not following')
+              return
+            }
+            console.log('\n')
+            console.log(user.following)
+            user.following = user.following.filter(id => id !== req.body.id);
+            console.log(user.following)
+            console.log(req.body.id)
+            console.log('\n')
+            user.save().then(
+              (user) => {
+                User.findById(user._id)
+                  .then((_) => {
+                    let newFollowing = user.following.find(
+                      (following) =>
+                        !oldFollowing.find(
+                          (oldFollowing) => oldFollowing === following
+                        )
+                    );
+                    res.statusCode = 200;
+                    res.json(newFollowing);
+                  });
+              },
+              (err) => {
+                console.log("error following", err);
+                next(err);
+              }
+            );
+            return;
+          }
+          err = new Error("User" + req.params.id + "not found");
+          err.status = 404;
+          return next(err);
         },
         (err) => {
           next(err);

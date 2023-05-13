@@ -1,6 +1,10 @@
 import { BlogContent } from "~/types/blog";
 import { UserContent } from "~/types/user";
 
+export const useGetBlogsById = async (id: string) => {
+  return await Api.request("get", `/blogs/userBlogs/${id}`);
+}
+
 export const usePostBlog = async (data: BlogContent, next: Function) => {
   if (!data.header) {
     alert("Header is required.");
@@ -69,27 +73,6 @@ export const usePostComment = async (
   }
 };
 
-export const useDeleteComment = async (
-  blogId: string,
-  commentId: string,
-  next: Function = () => {}
-) => {
-  const res = await Api.request(
-    "delete",
-    `/blogs/${blogId}/comments/${commentId}`
-  ).then((res) => {
-    return res;
-  });
-
-  if (res.status === 200) {
-    next(res);
-  } else {
-    alert("Error occured.");
-  }
-
-  return res;
-};
-
 export const useEditComment = async (
   blogId: string,
   commentId: string,
@@ -109,6 +92,27 @@ export const useEditComment = async (
   } else {
     alert("Error occured.");
   }
+};
+
+export const useDeleteComment = async (
+  blogId: string,
+  commentId: string,
+  next: Function = () => {}
+) => {
+  const res = await Api.request(
+    "delete",
+    `/blogs/${blogId}/comments/${commentId}`
+  ).then((res) => {
+    return res;
+  });
+
+  if (res.status === 200) {
+    next(res);
+  } else {
+    alert("Error occured.");
+  }
+
+  return res;
 };
 
 export const useEditUser = async (
@@ -166,4 +170,54 @@ export const useLogout = () => {
   usernameCookie.value = null;
 
   navigateTo("/login");
+};
+
+export const usePostFollowing = async (
+  userId: string,
+  id: string,
+  next: Function = () => {}
+) => {
+  if (!userId.trim()) return;
+  const data = {
+    id,
+  };
+
+  const res = await Api.request(
+    "post",
+    `/users/subscribe/${userId}`,
+    JSON.stringify(data),
+    {
+      "Content-Type": "application/json",
+    }
+  );
+  if (res.status === 201) {
+    next(res);
+  } else {
+    alert("Error occured.");
+  }
+};
+
+export const useDeleteFollowing = async (
+  userId: string,
+  id: string,
+  next: Function = () => {}
+) => {
+  if (!id.trim()) return;
+  const data = {
+    id,
+  };
+
+  const res = await Api.request(
+    "delete",
+    `/users/subscribe/${userId}`,
+    JSON.stringify(data),
+    {
+      "Content-Type": "application/json",
+    }
+  );
+  if (res.status === 200) {
+    next(res);
+  } else {
+    alert("Error occured.");
+  }
 };

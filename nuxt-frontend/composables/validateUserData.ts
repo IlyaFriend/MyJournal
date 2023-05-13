@@ -15,7 +15,7 @@ export const validateUserData = (
     }
   }
   if (userData.username) {
-    const usernameRegex = /^[a-zA-Z0-9]+$/;
+    const usernameRegex = /^[a-zA-Z0-9_]+$/;
     if (userData.username.length < 4)
       return {
         error: {
@@ -30,7 +30,7 @@ export const validateUserData = (
       };
   }
 
-  const nameRegex = /^[a-zA-Z\-]+$/;
+  const nameRegex = /^[a-zA-Z0-9\u0400-\u04FF]+$/;
   if (userData.firstname) {
     if (!userData.firstname.match(nameRegex))
       return {

@@ -19,15 +19,10 @@ import { useDeleteBlog, useEditBlog } from "~/composables/dbActions";
 import { BlogContent } from "~/types/blog";
 import api from "~/utils/Api";
 
-
 const initBlogs = await api.request("get", `/blogs`);
 let blogs = ref(initBlogs);
 
 const deleteBlog = async (id: string) => await useDeleteBlog(id)
 
 const editBlog = async (blogId: string, articleData: BlogContent) => await useEditBlog(blogId, articleData)
-
-onMounted(() => {
-  console.log(blogs);
-});
 </script>
