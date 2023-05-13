@@ -122,11 +122,6 @@ const editUser = async () => {
 };
 
 const deleteUser = async () => useDeleteUser(userInfo._id);
-
-onMounted(async () => {
-  console.log(userInfo);
-});
-
 </script>
 
 <style scoped>
