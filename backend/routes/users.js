@@ -71,17 +71,24 @@ router.post(
   cors.corsWithOptions,
   passport.authenticate("local"),
   (req, res) => {
-    var token = authenticate.getToken({ _id: req.user._id });
-    res.statusCode = 200;
-    res.setHeader("Content-Type", "application/json");
-    res.json({
-      success: true,
-      token: token,
-      id: req.user._id,
-      username: req.user.username,
-      admin: req.user.admin,
-      status: "You are successfully logged in!",
-    });
+    try {
+      var token = authenticate.getToken({ _id: req.user._id });
+      res.statusCode = 200;
+      res.setHeader("Content-Type", "application/json");
+      res.json({
+        success: true,
+        token: token,
+        id: req.user._id,
+        username: req.user.username,
+        admin: req.user.admin,
+        status: "You are successfully logged in!",
+      });      
+    }
+    catch (err) {
+      res.statusCode = 500;
+      res.setHeader("Content-Type", "application/json");
+      res.json({ err: err });
+    }
   }
 );
 
@@ -90,7 +97,7 @@ router
   .options(cors.corsWithOptions, (req, res) => {
     res.sendStatus(200);
   })
-  .get(cors.cors, (req, res, next) => {
+  .get(cors.cors, authenticate.verifyUser, (req, res, next) => {
     User.findByUsername(req.params.username)
       .then(
         (user) => {
@@ -109,7 +116,6 @@ router
   .put(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
     if (req.body.newPassword) {
       console.log(req.body.password);
-      // User.changeUserPassword(req.params.username, req.body.password)
       User.findByIdAndUpdate(
         req.params.username,
         { password: req.body.password },
