@@ -40,10 +40,6 @@ var app = express();
 
 app.use(cors());
 app.all('*', (req, res, next) => {
-    // if (!req.secure) {
-    //     res.redirect(307, 'https://' + req.hostname + ':' + app.get('secPort') + req.url);
-    // }
-    // else return next();
     return next();
 })
 
