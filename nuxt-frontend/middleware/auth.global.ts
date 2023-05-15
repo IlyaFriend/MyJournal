@@ -3,16 +3,14 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     return;
   }
 
-  if (true) {
-    const jwt = useCookie("jwt");
-    if (!jwt.value) {
-      return navigateTo("/login");
-    }
+  const jwt = useCookie("jwt");
+  if (!jwt.value) {
+    return navigateTo("/login");
+  }
 
-    const user = await getCurrentUser()
-    
-    if (!user) {
-      return navigateTo("/login");
-    }
+  const user = await getCurrentUser();
+
+  if (!user) {
+    return navigateTo("/login");
   }
 });
