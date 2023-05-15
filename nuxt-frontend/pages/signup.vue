@@ -7,7 +7,7 @@
         <i class="w-full text-center text-blue-500 fas fa-landmark fa-3x"></i>
       </div>
       <h2 class="mt-6 text-3xl font-bold leading-9 text-center text-white">
-        LivMyJournal
+        MyJournal
       </h2>
     </div>
 
